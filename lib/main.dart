@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const IbnMusferApp());
@@ -77,7 +76,24 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF0D47A1),
-        title: const Text('ابن مسفر لتجارة مواد البناء', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: const Icon(Icons.foundation, color: Color(0xFF0D47A1), size: 24),
+            ),
+            const SizedBox(width: 8),
+            const Text(
+              'ابن مسفر لتجارة مواد البناء',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+          ],
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -85,6 +101,38 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6)],
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: 70,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0D47A1).withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.foundation, color: Color(0xFF0D47A1), size: 40),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'ابن مسفر',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF0D47A1)),
+                  ),
+                  const Text(
+                    'لتجارة مواد البناء .. جودة البناء تبدأ من اختيارك',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
@@ -287,13 +335,6 @@ class CartScreen extends StatelessWidget {
 class ContactScreen extends StatelessWidget {
   const ContactScreen({super.key});
 
-  Future<void> _launchWhatsApp() async {
-    final Uri url = Uri.parse('https://wa.me/qr/NUD44EP3XV3EB1');
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $url');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -312,13 +353,11 @@ class ContactScreen extends StatelessWidget {
               subtitle: Text('711395120', style: TextStyle(fontSize: 16)),
             ),
           ),
-          Card(
+          const Card(
             child: ListTile(
-              leading: const Icon(Icons.chat, color: Colors.green),
-              title: const Text('واتساب', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: const Text('اضغط هنا للتواصل عبر واتساب مباشرة', style: TextStyle(color: Colors.green)),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: _launchWhatsApp,
+              leading: Icon(Icons.chat, color: Colors.green),
+              title: Text('واتساب', style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text('711395120 (https://wa.me/qr/NUD44EP3XV3EB1)', style: TextStyle(color: Colors.green, fontSize: 13)),
             ),
           ),
           const Card(
