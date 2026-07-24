@@ -26,18 +26,16 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Create Flutter Project Structure
+      - name: Create Flutter Project Structure and Build
         run: |
-          # إنشاء مشروع مؤقت لجلب مجلدات الأندرويد والهيكل الصحيح
           flutter create temp_app --org com.example.app
-          # نقل ملفاتك الحالية (مثل مجلد lib وملف pubspec) إلى المشروع المؤقت
+          rm -rf temp_app/lib temp_app/pubspec.yaml
           cp -r lib temp_app/
           cp pubspec.yaml temp_app/
-          # الدخول للمشروع المؤقت وبناء الـ APK منه مباشرة
           cd temp_app
           flutter pub get
           flutter build apk --release
-
+          
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
