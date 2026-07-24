@@ -13,7 +13,7 @@ class IbnMusferApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ابن مسفر لتجارة مواد البناء',
       theme: ThemeData(
-        primaryColor: const Color(0xFF0D47A1),
+        primaryColor: const Color(0xFF0C1B33), // اللون الأزرق الداكن المطابق للشعار
         scaffoldBackgroundColor: const Color(0xFFF8F9FA),
         fontFamily: 'Roboto',
       ),
@@ -54,7 +54,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           });
         },
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFFD32F2F),
+        selectedItemColor: const Color(0xFFF26522), // اللون البرتقالي المطابق للشعار
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
@@ -71,26 +71,31 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  // رابط صورة الشعار الخاصة بك
+  final String logoUrl = "https://raw.githubusercontent.com/saadmisfir20-blip/my_flutter_app/main/assets/logo.png";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0D47A1),
+        backgroundColor: const Color(0xFF0C1B33),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(6),
+            ClipOval(
+              child: Image.network(
+                logoUrl,
+                height: 38,
+                width: 38,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.construction, color: Colors.orange),
               ),
-              child: const Icon(Icons.foundation, color: Color(0xFF0D47A1), size: 24),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             const Text(
               'ابن مسفر لتجارة مواد البناء',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),
             ),
           ],
         ),
@@ -101,33 +106,41 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // بطاقة الشعار الرئيسية
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6)],
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8)],
               ),
               child: Column(
                 children: [
                   Container(
-                    width: 70,
-                    height: 70,
+                    width: 110,
+                    height: 110,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0D47A1).withOpacity(0.1),
                       shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xFFF26522), width: 2),
                     ),
-                    child: const Icon(Icons.foundation, color: Color(0xFF0D47A1), size: 40),
+                    child: ClipOval(
+                      child: Image.network(
+                        logoUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.construction, size: 50, color: Color(0xFF0C1B33)),
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   const Text(
-                    'ابن مسفر',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF0D47A1)),
+                    'ابن مسفر للتجارة',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF0C1B33)),
                   ),
                   const Text(
-                    'لتجارة مواد البناء .. جودة البناء تبدأ من اختيارك',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    'مواد بناء - Ibn Msfer Building Materials',
+                    style: TextStyle(fontSize: 13, color: Color(0xFFF26522), fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
@@ -137,7 +150,7 @@ class HomeScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: const Color(0xFF0D47A1),
+                color: const Color(0xFF0C1B33),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -145,11 +158,11 @@ class HomeScreen extends StatelessWidget {
                   const Text('أسمنت ابن مسفر بأعلى جودة', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFD32F2F)),
+                    style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFF26522)),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const CategoryDetailScreen(categoryTitle: 'أسمنت ومواد بناء')));
                     },
-                    child: const Text('تسوق الآن', style: TextStyle(color: Colors.white)),
+                    child: const Text('تسوق الآن', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                   )
                 ],
               ),
@@ -190,7 +203,7 @@ class CategoriesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0D47A1),
+        backgroundColor: const Color(0xFF0C1B33),
         title: const Text('الأقسام', style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
@@ -201,7 +214,7 @@ class CategoriesScreen extends StatelessWidget {
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             child: ListTile(
-              leading: const Icon(Icons.category, color: Color(0xFF0D47A1)),
+              leading: const Icon(Icons.category, color: Color(0xFF0C1B33)),
               title: Text(cat, style: const TextStyle(fontWeight: FontWeight.bold)),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
@@ -224,7 +237,7 @@ class CategoryDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0D47A1),
+        backgroundColor: const Color(0xFF0C1B33),
         title: Text(categoryTitle, style: const TextStyle(color: Colors.white)),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -250,11 +263,11 @@ class ProductCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
-        leading: const Icon(Icons.inventory_2, color: Color(0xFF0D47A1), size: 36),
+        leading: const Icon(Icons.inventory_2, color: Color(0xFF0C1B33), size: 36),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(price, style: const TextStyle(color: Color(0xFFD32F2F), fontWeight: FontWeight.bold)),
+        subtitle: Text(price, style: const TextStyle(color: Color(0xFFF26522), fontWeight: FontWeight.bold)),
         trailing: ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0D47A1)),
+          style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF0C1B33)),
           onPressed: () {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('تمت إضافة $title إلى السلة')),
@@ -275,7 +288,7 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0D47A1),
+        backgroundColor: const Color(0xFF0C1B33),
         title: const Text('سلة الطلبات', style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
@@ -304,7 +317,7 @@ class CartScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('إجمالي المنتجات:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                      Text('236,500 ر.س', style: TextStyle(fontSize: 18, color: Color(0xFFD32F2F), fontWeight: FontWeight.bold)),
+                      Text('236,500 ر.س', style: TextStyle(fontSize: 18, color: Color(0xFFF26522), fontWeight: FontWeight.bold)),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -312,10 +325,22 @@ class CartScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 48,
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFD32F2F)),
+                      style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFF26522)),
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('تم إرسال طلبك بنجاح!')),
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('تم استلام الطلب!'),
+                            content: const Text(
+                              'شكراً لطلبك من ابن مسفر لتجارة مواد البناء.\n\nسيتم التواصل معك عبر الرقم (711395120) لتأكيد التوصيل والتفاصيل.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('موافق'),
+                              ),
+                            ],
+                          ),
                         );
                       },
                       child: const Text('إتمام الطلب', style: TextStyle(color: Colors.white, fontSize: 16)),
@@ -339,7 +364,7 @@ class ContactScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0D47A1),
+        backgroundColor: const Color(0xFF0C1B33),
         title: const Text('التواصل معنا', style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
@@ -348,7 +373,7 @@ class ContactScreen extends StatelessWidget {
         children: [
           const Card(
             child: ListTile(
-              leading: Icon(Icons.phone, color: Color(0xFF0D47A1)),
+              leading: Icon(Icons.phone, color: Color(0xFF0C1B33)),
               title: Text('أرقام التواصل', style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Text('711395120', style: TextStyle(fontSize: 16)),
             ),
@@ -357,12 +382,12 @@ class ContactScreen extends StatelessWidget {
             child: ListTile(
               leading: Icon(Icons.chat, color: Colors.green),
               title: Text('واتساب', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text('711395120 (https://wa.me/qr/NUD44EP3XV3EB1)', style: TextStyle(color: Colors.green, fontSize: 13)),
+              subtitle: Text('711395120', style: TextStyle(color: Colors.green, fontSize: 13)),
             ),
           ),
           const Card(
             child: ListTile(
-              leading: Icon(Icons.location_on, color: Color(0xFFD32F2F)),
+              leading: Icon(Icons.location_on, color: Color(0xFFF26522)),
               title: Text('الموقع', style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Text('ريمة - الجبين - الشارع العام'),
             ),
@@ -393,7 +418,7 @@ class CategoryCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 40, color: const Color(0xFF0D47A1)),
+            Icon(icon, size: 40, color: const Color(0xFF0C1B33)),
             const SizedBox(height: 8),
             Text(title, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold)),
           ],
@@ -413,7 +438,7 @@ class CartItemTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 6),
       child: ListTile(
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(price, style: const TextStyle(color: Color(0xFFD32F2F))),
+        subtitle: Text(price, style: const TextStyle(color: Color(0xFFF26522))),
         trailing: Text('الكمية: $qty'),
       ),
     );
