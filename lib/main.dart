@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const IbnMusferApp());
@@ -13,7 +14,7 @@ class IbnMusferApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ابن مسفر لتجارة مواد البناء',
       theme: ThemeData(
-        primaryColor: const Color(0xFF0C1B33), // اللون الأزرق الداكن المطابق للشعار
+        primaryColor: const Color(0xFF0C1B33),
         scaffoldBackgroundColor: const Color(0xFFF8F9FA),
         fontFamily: 'Roboto',
       ),
@@ -54,7 +55,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           });
         },
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFFF26522), // اللون البرتقالي المطابق للشعار
+        selectedItemColor: const Color(0xFFF26522),
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
@@ -71,7 +72,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  // رابط صورة الشعار الخاصة بك
   final String logoUrl = "https://raw.githubusercontent.com/saadmisfir20-blip/my_flutter_app/main/assets/logo.png";
 
   @override
@@ -106,7 +106,6 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // بطاقة الشعار الرئيسية
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -228,7 +227,7 @@ class CategoriesScreen extends StatelessWidget {
   }
 }
 
-// ---------------- 3. شاشة تفاصيل القسم / المنتجات ----------------
+// ---------------- 3. شاشة تفاصيل القسم ----------------
 class CategoryDetailScreen extends StatelessWidget {
   final String categoryTitle;
   const CategoryDetailScreen({super.key, required this.categoryTitle});
@@ -280,9 +279,26 @@ class ProductCard extends StatelessWidget {
   }
 }
 
-// ---------------- 4. شاشة السلة ----------------
+// ---------------- 4. شاشة السلة وتوجيه الطلب للواتساب ----------------
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
+
+  Future<void> _sendOrderToWhatsApp(BuildContext context) async {
+    const phoneNumber = "967711395120"; // رقم الواتساب الرسمي
+    const message = "السلام عليكم ورحمة الله وبركاته،\nأود إتمام طلب شراء مواد بناء من متجر ابن مسفر:\n- أسمنت الوطنية 50 كجم (عدد 10)\n- حديد تسليح 12 مم (عدد 20)\n\nالإجمالي: 236,500 ر.س";
+    
+    final Uri whatsappUrl = Uri.parse("https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}");
+
+    if (await canLaunchUrl(whatsappUrl)) {
+      await launchUrl(whatsappUrl, mode: LaunchMode.externalApplication);
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تعذر فتح تطبيق الواتساب')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -325,25 +341,16 @@ class CartScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 48,
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFF26522)),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('تم استلام الطلب!'),
-                            content: const Text(
-                              'شكراً لطلبك من ابن مسفر لتجارة مواد البناء.\n\nسيتم التواصل معك عبر الرقم (711395120) لتأكيد التوصيل والتفاصيل.',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text('موافق'),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      child: const Text('إتمام الطلب', style: TextStyle(color: Colors.white, fontSize: 16)),
+                      style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF25D366)),
+                      onPressed: () => _sendOrderToWhatsApp(context),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.chat, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text('إتمام الطلب عبر الواتساب', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -380,9 +387,9 @@ class ContactScreen extends StatelessWidget {
           ),
           const Card(
             child: ListTile(
-              leading: Icon(Icons.chat, color: Colors.green),
+              leading: Icon(Icons.chat, color: Color(0xFF25D366)),
               title: Text('واتساب', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text('711395120', style: TextStyle(color: Colors.green, fontSize: 13)),
+              subtitle: Text('711395120', style: TextStyle(color: Color(0xFF25D366), fontSize: 13)),
             ),
           ),
           const Card(
