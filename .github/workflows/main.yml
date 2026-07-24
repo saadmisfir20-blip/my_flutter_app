@@ -27,7 +27,7 @@ jobs:
           channel: 'stable'
 
       - name: Install Dependencies
-        run: flutter pub get --no-pubspec-overrides
+        run: flutter pub upgrade
 
       - name: Build APK
         run: flutter build apk --release --no-sound-null-safety
