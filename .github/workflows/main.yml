@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -26,14 +26,17 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install Dependencies
-        run: flutter pub get
-
-      - name: Build APK
-        run: flutter build apk --release --no-tree-shake-icons
+      - name: Re-create Android Project Structure
+        run: |
+          mkdir temp_app
+          cd temp_app
+          flutter create . --org com.example --template=app
+          cp -r ../lib .
+          flutter build apk --release --no-tree-shake-icons
+          cp build/app/outputs/flutter-apk/app-release.apk ../app-release.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: app-release.apk
