@@ -26,16 +26,32 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Create Flutter Project Structure and Build
+      - name: Build Clean APK
         run: |
           flutter create temp_app --org com.example.app
-          rm -rf temp_app/lib temp_app/pubspec.yaml
+          rm -rf temp_app/lib
           cp -r lib temp_app/
-          cp pubspec.yaml temp_app/
           cd temp_app
+          # إنشاء pubspec نظيف وخالي من أي حزم خارجية تسبب مشاكل بالترجمة
+          cat << 'EOF' > pubspec.yaml
+          name: temp_app
+          description: A new Flutter project.
+          publish_to: none
+          version: 1.0.0+1
+          environment:
+            sdk: ">=3.0.0 <4.0.0"
+          dependencies:
+            flutter:
+              sdk: flutter
+          dev_dependencies:
+            flutter_test:
+              sdk: flutter
+          flutter:
+            uses-material-design: true
+          EOF
           flutter pub get
           flutter build apk --release
-          
+
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
