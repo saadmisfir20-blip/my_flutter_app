@@ -26,8 +26,20 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install Dependencies
-        run: flutter pub upgrade
+      - name: Create Flutter Project Structure
+        run: |
+          # إنشاء مشروع مؤقت لجلب مجلدات الأندرويد والهيكل الصحيح
+          flutter create temp_app --org com.example.app
+          # نقل ملفاتك الحالية (مثل مجلد lib وملف pubspec) إلى المشروع المؤقت
+          cp -r lib temp_app/
+          cp pubspec.yaml temp_app/
+          # الدخول للمشروع المؤقت وبناء الـ APK منه مباشرة
+          cd temp_app
+          flutter pub get
+          flutter build apk --release
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: temp_app/build/app/outputs/flutter-apk/app-release.apk
