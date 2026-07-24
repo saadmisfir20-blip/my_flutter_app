@@ -26,19 +26,15 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Force Build APK Ignoring Errors
+      - name: Build Default Flutter APK
         run: |
-          flutter create temp_app --org com.example.app --platform android
-          rm -rf temp_app/lib temp_app/pubspec.yaml
-          cp -r lib temp_app/
-          cp pubspec.yaml temp_app/
-          cd temp_app
+          flutter create my_app
+          cd my_app
           flutter pub get
-          # بناء APK مع تجاوز فحص الأخطاء الصارمة وتوليد الملف بالقوة
-          flutter build apk --release --no-pub-get || flutter build apk --release
+          flutter build apk --release
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: temp_app/build/app/outputs/flutter-apk/app-release.apk
+          path: my_app/build/app/outputs/flutter-apk/app-release.apk
