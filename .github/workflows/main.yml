@@ -3,8 +3,6 @@ name: Build Flutter APK
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
@@ -26,10 +24,8 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Build Default Flutter APK
+      - name: Build Real App APK
         run: |
-          flutter create my_app
-          cd my_app
           flutter pub get
           flutter build apk --release
 
@@ -37,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: my_app/build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
