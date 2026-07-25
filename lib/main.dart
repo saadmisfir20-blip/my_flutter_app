@@ -12,35 +12,35 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'متجر ابن مسفر',
+      title: 'متجر مواد البناء',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const CategoriesPage(),
+      home: const BuildingMaterialsPage(),
     );
   }
 }
 
-// صفحة الأقسام الرئيسية
-class CategoriesPage extends StatelessWidget {
-  const CategoriesPage({super.key});
+// صفحة أقسام مواد البناء الرئيسية
+class BuildingMaterialsPage extends StatelessWidget {
+  const BuildingMaterialsPage({super.key});
 
-  // قائمة الأقسام في متجرك
-  final List<Map<String, String>> categories = const [
+  // أقسام مواد البناء
+  final List<Map<String, String>> buildingSections = const [
     {
-      'title': 'المواد الغذائية',
-      'subtitle': 'مواد غذائية أساسية واستهلاكية',
-      'image': '🛒'
-    },
-    {
-      'title': 'خدمات الصرافة والحوالات',
-      'subtitle': 'خدمات النقد وتحويل الأموال',
-      'image': '💸'
-    },
-    {
-      'title': 'مواد البناء',
-      'subtitle': 'مستلزمات البناء والتشييد',
+      'title': 'الأسمنت والحديد',
+      'subtitle': 'جميع أنواع الأسمنت وحديد التسليح',
       'image': '🏗️'
+    },
+    {
+      'title': 'البطحاء والسمسمية والرخام',
+      'subtitle': 'مستلزمات الخرسانة والتشطيبات',
+      'image': '🧱'
+    },
+    {
+      'title': 'أدوات البناء والمعدات',
+      'subtitle': 'خلاطات، مواسير، ومعدات أخرى',
+      'image': '🛠️'
     },
   ];
 
@@ -48,35 +48,35 @@ class CategoriesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('أقسام المتجر'),
+        title: const Text('قسم مواد البناء'),
         centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: ListView.builder(
-          itemCount: categories.length,
+          itemCount: buildingSections.length,
           itemBuilder: (context, index) {
             return Card(
               elevation: 4,
               margin: const EdgeInsets.symmetric(vertical: 8),
               child: ListTile(
                 leading: Text(
-                  categories[index]['image']!,
+                  buildingSections[index]['image']!,
                   style: const TextStyle(fontSize: 32),
                 ),
                 title: Text(
-                  categories[index]['title']!,
+                  buildingSections[index]['title']!,
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                subtitle: Text(categories[index]['subtitle']!),
+                subtitle: Text(buildingSections[index]['subtitle']!),
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
-                  // عند الضغط على القسم، ينتقل إلى صفحة المنتجات الخاصة به
+                  // الانتقال إلى منتجات القسم المختار
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CategoryProductsPage(
-                        categoryName: categories[index]['title']!,
+                      builder: (context) => SectionItemsPage(
+                        sectionName: buildingSections[index]['title']!,
                       ),
                     ),
                   );
@@ -90,16 +90,16 @@ class CategoriesPage extends StatelessWidget {
   }
 }
 
-// صفحة المنتجات داخل القسم المحدد
-class CategoryProductsPage extends StatelessWidget {
-  final String categoryName;
+// صفحة استعراض المنتجات داخل القسم
+class SectionItemsPage extends StatelessWidget {
+  final String sectionName;
 
-  const CategoryProductsPage({super.key, required this.categoryName});
+  const SectionItemsPage({super.key, required this.sectionName});
 
-  // دالة إرسال الطلب إلى الواتساب
-  Future<void> sendOrderToWhatsApp(String productName) async {
+  // دالة إرسال الطلب عبر الواتساب إلى رقمك مباشرة
+  Future<void> sendOrderToWhatsApp(String itemName) async {
     String phoneNumber = "+967711395120";
-    String message = "السلام عليكم، أريد طلب ($productName) من قسم ($categoryName).";
+    String message = "السلام عليكم، أريد طلب ($itemName) من قسم ($sectionName).";
     String url = "https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}";
     
     if (await canLaunchUrl(Uri.parse(url))) {
@@ -111,32 +111,32 @@ class CategoryProductsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // أمثلة لمنتجات وهمية داخل القسم (يمكنك تعديلها لاحقاً)
-    final List<String> products = [
-      'منتج رقم 1',
-      'منتج رقم 2',
-      'منتج رقم 3',
+    // قائمة تجريبية للمنتجات داخل كل قسم (يمكنك تعديلها لاحقاً)
+    final List<String> items = [
+      'منتج نوع أول',
+      'منتج نوع ثانٍ',
+      'منتج نوع ثالث',
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(categoryName),
+        title: Text(sectionName),
         centerTitle: true,
       ),
       body: ListView.builder(
-        itemCount: products.length,
+        itemCount: items.length,
         itemBuilder: (context, index) {
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             child: ListTile(
-              title: Text(products[index]),
-              subtitle: const Text('متوفر للطلب المباشر'),
+              title: Text(items[index]),
+              subtitle: const Text('متوفر للطلب والتوصيل'),
               trailing: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () => sendOrderToWhatsApp(products[index]),
+                onPressed: () => sendOrderToWhatsApp(items[index]),
                 child: const Text('طلب'),
               ),
             ),
