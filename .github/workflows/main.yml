@@ -24,8 +24,13 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Build Real App APK
+      - name: Build Project Safely
         run: |
+          flutter create temp_project --org com.store.app --platform android
+          rm -rf temp_project/lib temp_project/pubspec.yaml
+          cp -r lib temp_project/
+          cp pubspec.yaml temp_project/
+          cd temp_project
           flutter pub get
           flutter build apk --release
 
@@ -33,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: temp_project/build/app/outputs/flutter-apk/app-release.apk
