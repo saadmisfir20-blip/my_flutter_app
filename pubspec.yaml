@@ -1,4 +1,7 @@
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter: ^4.8.0 # أضف هذه الحزمة
+  webview_flutter: ^4.8.0
