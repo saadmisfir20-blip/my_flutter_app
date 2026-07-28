@@ -1,0 +1,15 @@
+name: Build Mobile App
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up dummy environment
+        run: echo "This is a placeholder for mobile app build logic."
+      - name: Build complete
+        run: echo "Workflow ran successfully."
