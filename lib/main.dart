@@ -1,149 +1,74 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-const String siteUrl = 'https://ibn-masfar-building-6lax.bolt.host/';
-
 void main() {
-  runApp(const IbnMasfarApp());
+  runApp(const IbnMosferApp());
 }
 
-class IbnMasfarApp extends StatelessWidget {
-  const IbnMasfarApp({super.key});
+class IbnMosferApp extends StatelessWidget {
+  const IbnMosferApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ibn Masfar',
       debugShowCheckedModeBanner: false,
+      title: 'ابن مسفر للتجارة - مواد بناء',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF0F4478),
-        ),
-        useMaterial3: true,
+        primarySwatch: Colors.amber,
       ),
-      home: const WebViewScreen(),
+      home: const WebDesignScreen(),
     );
   }
 }
 
-class WebViewScreen extends StatefulWidget {
-  const WebViewScreen({super.key});
+class WebDesignScreen extends StatefulWidget {
+  const WebDesignScreen({super.key});
 
   @override
-  State<WebViewScreen> createState() => _WebViewScreenState();
+  State<WebDesignScreen> createState() => _WebDesignScreenState();
 }
 
-class _WebViewScreenState extends State<WebViewScreen> {
+class _WebDesignScreenState extends State<WebDesignScreen> {
   late final WebViewController _controller;
-  bool _loading = true;
-  bool _error = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageStarted: (_) {
+          onPageFinished: (String url) {
             setState(() {
-              _loading = true;
-              _error = false;
-            });
-          },
-          onPageFinished: (_) {
-            setState(() => _loading = false);
-          },
-          onWebResourceError: (_) {
-            setState(() {
-              _error = true;
-              _loading = false;
+              _isLoading = false;
             });
           },
         ),
       )
-      ..loadRequest(Uri.parse(siteUrl));
-  }
-
-  void _reload() {
-    setState(() {
-      _error = false;
-      _loading = true;
-    });
-    _controller.reload();
+      ..loadRequest(Uri.parse('https://ibn-masfar-building-6lax.bolt.host/'));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: _error
-          ? _buildErrorView()
-          : Stack(
-              children: [
-                WebViewWidget(controller: _controller),
-                if (_loading)
-                  const Center(
-                    child: CircularProgressIndicator(
-                      color: Color(0xFF155594),
-                    ),
-                  ),
-              ],
-            ),
-    );
-  }
-
-  Widget _buildErrorView() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.wifi_off,
-              size: 64,
-              color: Colors.grey,
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'تعذر تحميل الموقع',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF1E293B),
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'تحقق من اتصالك بالإنترنت وحاول مرة أخرى',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15,
-                color: Color(0xFF64748B),
-              ),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: _reload,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF155594),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(999),
-                ),
-              ),
-              child: const Text(
-                'إعادة المحاولة',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        backgroundColor: Colors.amber[800],
+        title: const Text(
+          'مؤسسة ابن مسفر للتجارة',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        centerTitle: true,
+      ),
+      body: Stack(
+        children: [
+          WebViewWidget(controller: _controller),
+          if (_isLoading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
       ),
     );
   }
